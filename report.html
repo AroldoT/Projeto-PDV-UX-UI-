@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Compra - Sistema PDV</title>
+    <link rel="stylesheet" href="CSS/styles.css">
+</head>
+<body>
+    <div class="report-container">
+        <h2>Relatório de Compra</h2>
+        <div id="report-content"></div>
+        <a href="index.html" class="back-button">Voltar para a Loja</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reportData = JSON.parse(localStorage.getItem('reportData'));
+            if (reportData) {
+                const reportContent = document.getElementById('report-content');
+                let html = '<h3>Itens Comprados:</h3><ul>';
+                reportData.items.forEach(item => {
+                    html += `<li>${item.name} - R$ ${item.price.toFixed(2)}</li>`;
+                });
+                html += '</ul>';
+                html += `<p>Total: R$ ${reportData.total.toFixed(2)}</p>`;
+                html += `<p>Método de Pagamento: ${reportData.paymentMethod}</p>`;
+                reportContent.innerHTML = html;
+                localStorage.removeItem('reportData');
+            } else {
+                document.getElementById('report-content').innerHTML = '<p>Nenhum relatório encontrado.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
